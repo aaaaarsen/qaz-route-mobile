@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/router/app_router.dart';
 import 'package:qaz_route_mobile/src/widget/bottom_nav_bar.dart';
 
@@ -32,7 +33,8 @@ class AppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      routes: const [HomeRoute(), MapsRoute(), QrRoute(), ProfileRoute()],
+      backgroundColor: AppColors.background,
+      routes: const [HomeRoute(), MapRoute(), QrRoute(), ProfileRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavBar(tabsRouter: tabsRouter);
       },

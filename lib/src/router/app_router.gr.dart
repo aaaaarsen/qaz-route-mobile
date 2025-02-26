@@ -43,17 +43,17 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [MapsScreen]
-class MapsRoute extends PageRouteInfo<void> {
-  const MapsRoute({List<PageRouteInfo>? children})
-    : super(MapsRoute.name, initialChildren: children);
+/// [MapScreen]
+class MapRoute extends PageRouteInfo<void> {
+  const MapRoute({List<PageRouteInfo>? children})
+    : super(MapRoute.name, initialChildren: children);
 
-  static const String name = 'MapsRoute';
+  static const String name = 'MapRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const MapsScreen();
+      return const MapScreen();
     },
   );
 }

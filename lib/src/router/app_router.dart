@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:qaz_route_mobile/src/widget/app.dart';
-import 'package:qaz_route_mobile/src/widget/home_screen.dart';
-import 'package:qaz_route_mobile/src/widget/maps_screen.dart';
+import 'package:qaz_route_mobile/src/widget/home_screen/home_screen.dart';
+import 'package:qaz_route_mobile/src/widget/map_screen.dart';
 import 'package:qaz_route_mobile/src/widget/profile_screen.dart';
 import 'package:qaz_route_mobile/src/widget/qr_screen.dart';
 
@@ -17,7 +17,7 @@ class AppRouter extends RootStackRouter {
       initial: true,
       children: [
         AutoRoute(page: HomeRoute.page, path: 'home', initial: true),
-        AutoRoute(page: MapsRoute.page, path: 'maps'),
+        AutoRoute(page: MapRoute.page, path: 'map'),
         AutoRoute(page: QrRoute.page, path: 'qr'),
         AutoRoute(page: ProfileRoute.page, path: 'profile'),
       ],
