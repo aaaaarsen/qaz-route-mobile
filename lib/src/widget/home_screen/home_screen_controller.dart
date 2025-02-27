@@ -15,7 +15,12 @@ class HomeScreenController extends ChangeNotifier {
 
   List<RouteModel> _routes = [];
 
-  List<RouteModel> get routes => _routes;
+  List<RouteModel> get routes =>
+      _routes.where((route) {
+        return route.title.toLowerCase().contains(_searchQuery);
+      }).toList();
+
+  String _searchQuery = '';
 
   String _errorMessage = '';
 
@@ -43,23 +48,8 @@ class HomeScreenController extends ChangeNotifier {
   }
 
   void searchRoutes(String query) {
-    if (query.isEmpty) {
-      loadRoutes();
-      return;
-    }
-
     final lowercaseQuery = query.toLowerCase();
-
-    try {
-      _routes =
-          _routes.where((route) {
-            return route.title.toLowerCase().contains(lowercaseQuery);
-          }).toList();
-
-      notifyListeners();
-    } catch (e) {
-      _errorMessage = 'Error filtering routes: ${e.toString()}';
-      notifyListeners();
-    }
+    _searchQuery = lowercaseQuery;
+    notifyListeners();
   }
 }

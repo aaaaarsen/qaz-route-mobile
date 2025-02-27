@@ -36,11 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.background,
           surfaceTintColor: AppColors.background,
+          centerTitle: false,
           title: Text(
             'Discover Almaty',
             style: TextStyle(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.bold,
+              fontSize: 28,
             ),
           ),
         ),
@@ -74,53 +76,59 @@ class _HomeScreenIdle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: homeScreenController.refreshRoutes,
-      color: AppColors.surface,
-      backgroundColor: AppColors.espresso,
-      child: CustomScrollView(
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            sliver: SliverToBoxAdapter(
-              child: TextField(
-                onChanged: (text) {
-                  homeScreenController.searchRoutes(text);
-                },
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: TextStyle(color: AppColors.textTertiary),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: AppColors.textSecondary,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          sliver: SliverToBoxAdapter(
+            child: TextField(
+              onChanged: (text) {
+                homeScreenController.searchRoutes(text);
+              },
+              style: TextStyle(color: AppColors.textPrimary),
+              cursorColor: AppColors.primary,
+              decoration: InputDecoration(
+                hintText: 'Search',
+                hintStyle: TextStyle(color: AppColors.textTertiary),
+                prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
+                fillColor: AppColors.ivory,
+                filled: true,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: AppColors.greige),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: AppColors.greige),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: AppColors.primary, width: 1.5),
                 ),
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.all(16),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 32,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.75,
-              ),
-              delegate: SliverChildBuilderDelegate((context, index) {
-                final route = homeScreenController.routes[index];
-                return _HomeScreenItem(route: route);
-              }, childCount: homeScreenController.routes.length),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 32,
+              crossAxisSpacing: 16,
+              childAspectRatio: 0.75,
             ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final route = homeScreenController.routes[index];
+              return _HomeScreenItem(route: route);
+            }, childCount: homeScreenController.routes.length),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
