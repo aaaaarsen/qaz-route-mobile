@@ -35,6 +35,7 @@ class AppScreen extends StatelessWidget {
     return AutoTabsScaffold(
       extendBody: true,
       backgroundColor: AppColors.background,
+      animationDuration: Duration.zero,
       routes: const [HomeRoute(), MapRoute(), QrRoute(), ProfileRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavBar(tabsRouter: tabsRouter);

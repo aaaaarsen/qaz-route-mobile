@@ -1,0 +1,219 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:qaz_route_mobile/src/core/app_colors.dart';
+import 'package:qaz_route_mobile/src/repository/auth_repository.dart';
+import 'package:qaz_route_mobile/src/router/app_router.dart';
+import 'package:qaz_route_mobile/src/widget/auth_screen/auth_screen_controller.dart';
+
+@RoutePage()
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final AuthScreenController _authScreenController;
+  bool _isPasswordVisible = false;
+  bool _isSignIn = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _authScreenController = AuthScreenController(repository: AuthRepository());
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _authScreenController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  InputDecoration _getInputDecoration({
+    required String hintText,
+    required IconData prefixIcon,
+    Widget? suffixIcon,
+  }) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(color: AppColors.textTertiary),
+      prefixIcon: Icon(prefixIcon, color: AppColors.stone),
+      suffixIcon: suffixIcon,
+      fillColor: AppColors.ivory,
+      filled: true,
+      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(24),
+        borderSide: const BorderSide(color: AppColors.greige),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(24),
+        borderSide: const BorderSide(color: AppColors.greige),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(24),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: ListenableBuilder(
+          listenable: _authScreenController,
+          builder: (context, child) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    'QazRoute',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  TextField(
+                    controller: _emailController,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    cursorColor: AppColors.primary,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: _getInputDecoration(
+                      hintText: 'Email',
+                      prefixIcon: Icons.email,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _passwordController,
+                    style: const TextStyle(color: AppColors.textPrimary),
+                    cursorColor: AppColors.primary,
+                    obscureText: !_isPasswordVisible,
+                    decoration: _getInputDecoration(
+                      hintText: 'Password',
+                      prefixIcon: Icons.lock,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: AppColors.stone,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  if (_authScreenController.errorMessage.isNotEmpty) ...[
+                    Text(
+                      _authScreenController.errorMessage,
+                      style: TextStyle(color: AppColors.error),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                  ElevatedButton(
+                    onPressed: () async {
+                      switch (_authScreenController.state) {
+                        case AuthScreenState.loading:
+                          return;
+                        case AuthScreenState.idle || AuthScreenState.error:
+                          final isSuccess = await () async {
+                            if (_isSignIn) {
+                              return await _authScreenController.signIn(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                            } else {
+                              return await _authScreenController.signUp(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                            }
+                          }();
+
+                          if (isSuccess && context.mounted) {
+                            context.router.replace(AppRoute());
+                          }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.textLight,
+                      disabledBackgroundColor: AppColors.greige,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: switch (_authScreenController.state) {
+                      AuthScreenState.loading => const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: AppColors.textLight,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                      AuthScreenState.idle || AuthScreenState.error => Text(
+                        _isSignIn ? 'Sign In' : 'Sign Up',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _isSignIn
+                            ? 'Don\'t have an account? '
+                            : 'Already have an account?',
+                        style: TextStyle(color: AppColors.textSecondary),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() => _isSignIn = !_isSignIn);
+                        },
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                        ),
+                        child: Text(
+                          _isSignIn ? 'Sign Up' : 'Sign In',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

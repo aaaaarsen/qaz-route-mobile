@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/repository/auth_repository.dart';
+import 'package:qaz_route_mobile/src/router/app_router.dart';
 import 'package:qaz_route_mobile/src/widget/profile_screen/profile_screen_controller.dart';
 
 @RoutePage()
@@ -20,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     _profileScreenController = ProfileScreenController(
       repository: AuthRepository(),
-    )..loadProfile();
+    )..getUser();
   }
 
   @override
@@ -74,10 +75,10 @@ class _ProfileScreenIdle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = profileScreenController.profile;
+    final user = profileScreenController.user;
 
-    if (profile == null) {
-      return const Center(child: Text('No profile data available'));
+    if (user == null) {
+      return const Center(child: Text('No user data available'));
     }
 
     return CustomScrollView(
@@ -87,11 +88,7 @@ class _ProfileScreenIdle extends StatelessWidget {
           sliver: SliverToBoxAdapter(
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 48,
-                  backgroundImage: NetworkImage(profile.avatar),
-                  backgroundColor: AppColors.primary.withValues(alpha: 0.2),
-                ),
+                Icon(Icons.account_circle, size: 96, color: AppColors.primary),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -100,7 +97,7 @@ class _ProfileScreenIdle extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            profile.name,
+                            user.email ?? '',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -109,26 +106,38 @@ class _ProfileScreenIdle extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        profile.email,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        profile.phoneNumber,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
                     ],
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          sliver: SliverToBoxAdapter(
+            child: ElevatedButton(
+              onPressed: () async {
+                final isSuccess = await profileScreenController.signOut();
+
+                if (isSuccess && context.mounted) {
+                  context.router.replace(AuthRoute());
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.textLight,
+                disabledBackgroundColor: AppColors.greige,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                elevation: 0,
+              ),
+              child: Text(
+                'Sign Out',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
@@ -162,7 +171,7 @@ class _ProfileScreenError extends StatelessWidget {
           Text(profileScreenController.errorMessage),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: profileScreenController.refreshProfile,
+            onPressed: profileScreenController.refresh,
             child: const Text('Retry'),
           ),
         ],

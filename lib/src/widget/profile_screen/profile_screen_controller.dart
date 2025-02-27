@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:qaz_route_mobile/src/model/profile_model.dart';
 import 'package:qaz_route_mobile/src/repository/auth_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 enum ProfileScreenState { loading, idle, error }
 
@@ -13,21 +13,21 @@ class ProfileScreenController extends ChangeNotifier {
 
   ProfileScreenState get state => _state;
 
-  ProfileModel? _profile;
+  User? _user;
 
-  ProfileModel? get profile => _profile;
+  User? get user => _user;
 
   String _errorMessage = '';
 
   String get errorMessage => _errorMessage;
 
-  Future<void> loadProfile() async {
+  Future<void> getUser() async {
     try {
       _state = ProfileScreenState.loading;
       notifyListeners();
 
-      final profile = await repository.getProfile();
-      _profile = profile;
+      final user = await repository.getUser();
+      _user = user;
 
       _state = ProfileScreenState.idle;
     } catch (e) {
@@ -38,7 +38,17 @@ class ProfileScreenController extends ChangeNotifier {
     }
   }
 
-  Future<void> refreshProfile() async {
-    await loadProfile();
+  Future<bool> signOut() async {
+    try {
+      await repository.signOut();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> refresh() async {
+    await getUser();
   }
 }

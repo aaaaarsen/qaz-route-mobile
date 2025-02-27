@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/model/route_model.dart';
