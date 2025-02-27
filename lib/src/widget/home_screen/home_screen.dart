@@ -31,39 +31,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
-          centerTitle: false,
-          title: Text(
-            'Discover Almaty',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
+        centerTitle: false,
+        title: Text(
+          'Discover Almaty',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
           ),
         ),
-        backgroundColor: AppColors.background,
-        body: ListenableBuilder(
-          listenable: _homeScreenController,
-          builder: (context, child) {
-            switch (_homeScreenController.state) {
-              case HomeScreenState.loading:
-                return _HomeScreenLoading();
-              case HomeScreenState.error:
-                return _HomeScreenError(
-                  homeScreenController: _homeScreenController,
-                );
-              case HomeScreenState.idle:
-                return _HomeScreenIdle(
-                  homeScreenController: _homeScreenController,
-                );
-            }
-          },
-        ),
+      ),
+      backgroundColor: AppColors.background,
+      body: ListenableBuilder(
+        listenable: _homeScreenController,
+        builder: (context, child) {
+          switch (_homeScreenController.state) {
+            case HomeScreenState.loading:
+              return _HomeScreenLoading();
+            case HomeScreenState.error:
+              return _HomeScreenError(
+                homeScreenController: _homeScreenController,
+              );
+            case HomeScreenState.idle:
+              return _HomeScreenIdle(
+                homeScreenController: _homeScreenController,
+              );
+          }
+        },
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:qaz_route_mobile/src/widget/app.dart';
 import 'package:qaz_route_mobile/src/widget/home_screen/home_screen.dart';
 import 'package:qaz_route_mobile/src/widget/map_screen/map_screen.dart';
-import 'package:qaz_route_mobile/src/widget/profile_screen.dart';
+import 'package:qaz_route_mobile/src/widget/profile_screen/profile_screen.dart';
 import 'package:qaz_route_mobile/src/widget/qr_screen.dart';
 
 part 'app_router.gr.dart';
