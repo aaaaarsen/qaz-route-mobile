@@ -33,6 +33,7 @@ class AppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
+      extendBody: true,
       backgroundColor: AppColors.background,
       routes: const [HomeRoute(), MapRoute(), QrRoute(), ProfileRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
