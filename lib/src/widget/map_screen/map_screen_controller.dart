@@ -31,6 +31,10 @@ class MapScreenController extends ChangeNotifier {
 
   Set<Marker> get markers => _markers;
 
+  RouteModel? _selectedRoute;
+
+  RouteModel? get selectedRoute => _selectedRoute;
+
   Future<void> loadRoutes() async {
     try {
       _state = MapScreenState.loading;
@@ -52,7 +56,7 @@ class MapScreenController extends ChangeNotifier {
     for (var route in routes) {
       _polylines.add(
         Polyline(
-          polylineId: PolylineId('route-${route.id}'),
+          polylineId: PolylineId('polyline-${route.id}'),
           points: route.path,
           color: AppColors.info,
           width: 5,
@@ -65,28 +69,42 @@ class MapScreenController extends ChangeNotifier {
 
   void loadMarkers() {
     for (var route in routes) {
+      final markerId = 'marker-${route.id}';
       _markers.add(
         Marker(
-          markerId: MarkerId("marker-${route.id}"),
+          markerId: MarkerId(markerId),
           position: route.path.first,
           infoWindow: InfoWindow(title: route.title),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           onTap: () {
-            _polylines.clear();
-            _polylines.add(
-              Polyline(
-                polylineId: PolylineId('route-${route.id}'),
-                points: route.path,
-                color: AppColors.info,
-                width: 5,
-              ),
-            );
-
-            notifyListeners();
+            selectRoute(route);
           },
         ),
       );
     }
+
+    notifyListeners();
+  }
+
+  void selectRoute(RouteModel route) {
+    if (_selectedRoute?.id == route.id) {
+      _polylines.clear();
+      _selectedRoute = null;
+      loadMarkers();
+      return;
+    }
+
+    _polylines.clear();
+    _polylines.add(
+      Polyline(
+        polylineId: PolylineId('polyline-${route.id}'),
+        points: route.path,
+        color: AppColors.info,
+        width: 5,
+      ),
+    );
+
+    _selectedRoute = route;
 
     notifyListeners();
   }

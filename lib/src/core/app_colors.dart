@@ -44,4 +44,6 @@ class AppColors {
   static const Color textSecondary = Color(0xFF6E665D);
   static const Color textTertiary = Color(0xFF9E958C);
   static const Color textLight = Color(0xFFF5F2EE);
+
+  static const Color transparent = Colors.transparent;
 }
