@@ -38,47 +38,49 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.clear,
+        backgroundColor: AppColors.lightGreen600,
+        surfaceTintColor: AppColors.lightGreen600,
         centerTitle: false,
         title: Text(
           'Map',
           style: TextStyle(
-            color: AppColors.neutral900,
+            color: AppColors.white,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
       ),
-      body: ListenableBuilder(
-        listenable: _mapScreenController,
-        builder: (context, child) {
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: _kAlmaty,
-                  polylines: _mapScreenController.polylines,
-                  markers: _mapScreenController.markers,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
+      body: SafeArea(
+        child: ListenableBuilder(
+          listenable: _mapScreenController,
+          builder: (context, child) {
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: GoogleMap(
+                    mapType: MapType.satellite,
+                    initialCameraPosition: _kAlmaty,
+                    polylines: _mapScreenController.polylines,
+                    markers: _mapScreenController.markers,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  ),
                 ),
-              ),
-              Positioned(
-                top: MediaQuery.paddingOf(context).top,
-                left: 0,
-                right: 0,
-                child: MapScreenRoutePreview(
-                  route: _mapScreenController.selectedRoute,
+                Positioned(
+                  top: MediaQuery.paddingOf(context).top,
+                  left: 0,
+                  right: 0,
+                  child: MapScreenRoutePreview(
+                    route: _mapScreenController.selectedRoute,
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -98,10 +100,9 @@ class MapScreenRoutePreview extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(12),
-
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
@@ -111,78 +112,80 @@ class MapScreenRoutePreview extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              route!.imageUrl,
-              width: 64,
-              height: 64,
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  route!.title,
-                  style: const TextStyle(
-                    color: AppColors.neutral900,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  route!.location,
-                  style: TextStyle(
-                    color: AppColors.neutral900,
-                    fontSize: 14,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Column(
-            mainAxisSize: MainAxisSize.min,
+          Row(
             children: [
-              const Icon(
-                Icons.access_time,
-                size: 18,
-                color: AppColors.supplementary600600,
+              Image.network(
+                route!.imageUrl,
+                width: 64,
+                height: 48,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 4),
-              Text(
-                _formatCompletionTime(route!.completionTime),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: AppColors.supplementary600600,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      route!.title,
+                      style: const TextStyle(
+                        color: AppColors.neutral900,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      route!.location,
+                      style: TextStyle(
+                        color: AppColors.neutral900,
+                        fontSize: 14,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Distance', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 2),
+                  Text(
+                    '${route!.distance} km',
+                    maxLines: 2,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 48),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Distance', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 2),
+                  Text(
+                    route!.formattedCompletionTime(),
+                    maxLines: 2,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ],
           ),
         ],
       ),
     );
-  }
-
-  String _formatCompletionTime(int minutes) {
-    if (minutes < 60) {
-      return '$minutes min';
-    } else {
-      final hours = minutes ~/ 60;
-      final mins = minutes % 60;
-      return mins > 0 ? '$hours h $mins min' : '$hours h';
-    }
   }
 }

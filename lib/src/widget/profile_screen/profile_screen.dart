@@ -34,35 +34,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: AppColors.lightGreen600,
+        surfaceTintColor: AppColors.lightGreen600,
         centerTitle: false,
         title: Text(
           'Profile',
           style: TextStyle(
-            color: AppColors.neutral900,
+            color: AppColors.white,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
       ),
       backgroundColor: AppColors.white,
-      body: ListenableBuilder(
-        listenable: _profileScreenController,
-        builder: (context, child) {
-          switch (_profileScreenController.state) {
-            case ProfileScreenState.loading:
-              return const _ProfileScreenLoading();
-            case ProfileScreenState.error:
-              return _ProfileScreenError(
-                profileScreenController: _profileScreenController,
-              );
-            case ProfileScreenState.idle:
-              return _ProfileScreenIdle(
-                profileScreenController: _profileScreenController,
-              );
-          }
-        },
+      body: SafeArea(
+        child: ListenableBuilder(
+          listenable: _profileScreenController,
+          builder: (context, child) {
+            switch (_profileScreenController.state) {
+              case ProfileScreenState.loading:
+                return const _ProfileScreenLoading();
+              case ProfileScreenState.error:
+                return _ProfileScreenError(
+                  profileScreenController: _profileScreenController,
+                );
+              case ProfileScreenState.idle:
+                return _ProfileScreenIdle(
+                  profileScreenController: _profileScreenController,
+                );
+            }
+          },
+        ),
       ),
     );
   }
@@ -81,67 +83,65 @@ class _ProfileScreenIdle extends StatelessWidget {
       return const Center(child: Text('No user data available'));
     }
 
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.all(16),
-          sliver: SliverToBoxAdapter(
-            child: Row(
-              children: [
-                Icon(Icons.account_circle, size: 96, color: AppColors.supplementary600),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            user.email ?? '',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.neutral900,
-                            ),
-                          ),
-                        ],
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(Icons.account_box, size: 96, color: AppColors.neutral500),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.neutral900,
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      user.email ?? '',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.neutral900,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          sliver: SliverToBoxAdapter(
-            child: ElevatedButton(
-              onPressed: () async {
-                final isSuccess = await profileScreenController.signOut();
+          Expanded(child: SizedBox()),
+          ElevatedButton(
+            onPressed: () async {
+              final isSuccess = await profileScreenController.signOut();
 
-                if (isSuccess && context.mounted) {
-                  context.router.replace(AuthRoute());
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.supplementary600,
-                foregroundColor: AppColors.neutral900,
-                disabledBackgroundColor: AppColors.supplementary600,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                elevation: 0,
+              if (isSuccess && context.mounted) {
+                context.router.replace(AuthRoute());
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(double.maxFinite, 48),
+              backgroundColor: AppColors.neutral500,
+              foregroundColor: AppColors.white,
+              disabledBackgroundColor: AppColors.supplementary600,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                'Sign Out',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+              elevation: 8,
+            ),
+            child: Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

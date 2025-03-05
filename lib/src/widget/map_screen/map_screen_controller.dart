@@ -58,7 +58,7 @@ class MapScreenController extends ChangeNotifier {
         Polyline(
           polylineId: PolylineId('polyline-${route.id}'),
           points: route.path,
-          color: AppColors.supplementary600,
+          color: AppColors.supplementary600700,
           width: 5,
         ),
       );
@@ -75,7 +75,7 @@ class MapScreenController extends ChangeNotifier {
           markerId: MarkerId(markerId),
           position: route.path.first,
           infoWindow: InfoWindow(title: route.title),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           onTap: () {
             selectRoute(route);
           },
@@ -99,7 +99,7 @@ class MapScreenController extends ChangeNotifier {
       Polyline(
         polylineId: PolylineId('polyline-${route.id}'),
         points: route.path,
-        color: AppColors.supplementary600,
+        color: AppColors.supplementary600700,
         width: 5,
       ),
     );

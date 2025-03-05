@@ -33,35 +33,37 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+        backgroundColor: AppColors.lightGreen600,
+        surfaceTintColor: AppColors.lightGreen600,
         centerTitle: false,
         title: Text(
           'Discover Almaty',
           style: TextStyle(
-            color: AppColors.neutral900,
+            color: AppColors.white,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
       ),
       backgroundColor: AppColors.white,
-      body: ListenableBuilder(
-        listenable: _homeScreenController,
-        builder: (context, child) {
-          switch (_homeScreenController.state) {
-            case HomeScreenState.loading:
-              return _HomeScreenLoading();
-            case HomeScreenState.error:
-              return _HomeScreenError(
-                homeScreenController: _homeScreenController,
-              );
-            case HomeScreenState.idle:
-              return _HomeScreenIdle(
-                homeScreenController: _homeScreenController,
-              );
-          }
-        },
+      body: SafeArea(
+        child: ListenableBuilder(
+          listenable: _homeScreenController,
+          builder: (context, child) {
+            switch (_homeScreenController.state) {
+              case HomeScreenState.loading:
+                return _HomeScreenLoading();
+              case HomeScreenState.error:
+                return _HomeScreenError(
+                  homeScreenController: _homeScreenController,
+                );
+              case HomeScreenState.idle:
+                return _HomeScreenIdle(
+                  homeScreenController: _homeScreenController,
+                );
+            }
+          },
+        ),
       ),
     );
   }
@@ -96,16 +98,19 @@ class _HomeScreenIdle extends StatelessWidget {
                   horizontal: 16,
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: AppColors.supplementary600),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: AppColors.supplementary600),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(color: AppColors.supplementary600, width: 1.5),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: AppColors.supplementary600,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -113,17 +118,15 @@ class _HomeScreenIdle extends StatelessWidget {
         ),
         SliverPadding(
           padding: const EdgeInsets.all(16),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 32,
-              crossAxisSpacing: 16,
-              childAspectRatio: 0.75,
-            ),
-            delegate: SliverChildBuilderDelegate((context, index) {
+          sliver: SliverList.separated(
+            itemCount: homeScreenController.routes.length,
+            itemBuilder: (context, index) {
               final route = homeScreenController.routes[index];
               return _HomeScreenItem(route: route);
-            }, childCount: homeScreenController.routes.length),
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 16);
+            },
           ),
         ),
       ],
@@ -172,23 +175,71 @@ class _HomeScreenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.network(route.imageUrl, fit: BoxFit.cover),
-        ),
-        const SizedBox(height: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(route.title, maxLines: 1, style: TextStyle(fontSize: 18)),
-            const SizedBox(height: 4),
-            Text(route.location, maxLines: 2),
-          ],
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: AppColors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.4),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            route.title,
+            maxLines: 1,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('Distance', style: TextStyle(fontSize: 12)),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${route.distance} km',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text('Location', style: TextStyle(fontSize: 12)),
+                    const SizedBox(height: 2),
+                    Text(
+                      route.location,
+                      maxLines: 2,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Image.network(
+                route.imageUrl,
+                width: 128,
+                height: 96,
+                fit: BoxFit.cover,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

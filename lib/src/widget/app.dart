@@ -43,8 +43,9 @@ class AppScreen extends StatelessWidget {
             tabsRouter.setActiveIndex(index);
           },
           backgroundColor: AppColors.white,
-          indicatorColor: AppColors.lightGreen400,
+          indicatorColor: AppColors.lightGreen600,
           labelTextStyle: WidgetStateMapper({
+            WidgetState.selected: TextStyle(color: AppColors.lightGreen600),
             WidgetState.any: TextStyle(color: AppColors.neutral500),
           }),
           destinations: [
