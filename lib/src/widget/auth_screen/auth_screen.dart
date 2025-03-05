@@ -50,16 +50,16 @@ class _AuthScreenState extends State<AuthScreen> {
       filled: true,
       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(24),
-        borderSide: const BorderSide(color: AppColors.supplementary600),
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.black),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(24),
-        borderSide: const BorderSide(color: AppColors.supplementary600),
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.black),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(24),
-        borderSide: const BorderSide(color: AppColors.supplementary600, width: 1.5),
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.black, width: 1.5),
       ),
     );
   }
@@ -156,12 +156,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.supplementary600,
+                      backgroundColor: AppColors.lightGreen600,
                       foregroundColor: AppColors.neutral900,
-                      disabledBackgroundColor: AppColors.supplementary600,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 0,
                     ),
@@ -170,7 +169,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         width: 24,
                         height: 24,
                         child: CircularProgressIndicator(
-                          color: AppColors.lightGreen600,
+                          color: AppColors.white,
                           strokeWidth: 2,
                         ),
                       ),
