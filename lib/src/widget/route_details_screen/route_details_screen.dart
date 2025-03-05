@@ -19,7 +19,7 @@ class RouteDetailsScreen extends StatelessWidget {
         centerTitle: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.router.back(),
+          onPressed: () => context.router.maybePop(),
         ),
         title: Text(
           'Route Details',
