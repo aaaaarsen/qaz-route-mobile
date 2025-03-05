@@ -3,47 +3,72 @@ import 'package:flutter/material.dart';
 class AppColors {
   const AppColors._();
 
-  // Primary colors
-  static const Color primaryDark = Color(0xFF4A4238);
-  static const Color primary = Color(0xFF6D5D4B);
-  static const Color primaryLight = Color(0xFF8B7A68);
+  // Clear
+  static const Color clear = Colors.transparent;
 
-  // Accent colors
-  static const Color accent = Color(0xFFB1A296);
-  static const Color accentLight = Color(0xFFD1C8BF);
+  // White & Black
+  static const Color white = Colors.white;
+  static const Color black = Colors.black;
 
-  // Gray-brown neutrals
-  static const Color taupe = Color(0xFF7D746A);
-  static const Color stone = Color(0xFF9D8E7E);
-  static const Color greige = Color(0xFFBBB2A7);
-  static const Color mushroom = Color(0xFFDDD8D3);
-  static const Color bone = Color(0xFFEAE6E1);
-  static const Color ivory = Color(0xFFF5F2EE);
+  // supplementary600 (Based on #d24b43)
+  static const Color supplementary600900 = Color(0xFF8B2320);
+  static const Color supplementary600800 = Color(0xFFA02D29);
+  static const Color supplementary600700 = Color(0xFFB53732);
+  static const Color supplementary600600 = Color(0xFFC9423C);
+  static const Color supplementary600500 = Color(0xFFD24B43);
+  static const Color supplementary600400 = Color(0xFFDC655E);
+  static const Color supplementary600300 = Color(0xFFE57E79);
+  static const Color supplementary600200 = Color(0xFFEFA09D);
+  static const Color supplementary600100 = Color(0xFFF8C1C0);
+  static const Color supplementary60050 = Color(0xFFFDE1E0);
 
-  // Dark shades
-  static const Color espresso = Color(0xFF362D23);
-  static const Color charcoal = Color(0xFF414141);
-  static const Color slate = Color(0xFF5D5D5D);
+  // Supplementary (Based on #2b3c33)
+  static const Color supplementary900 = Color(0xFF101814);
+  static const Color supplementary800 = Color(0xFF16211C);
+  static const Color supplementary700 = Color(0xFF1C2923);
+  static const Color supplementary600 = Color(0xFF22312A);
+  static const Color supplementary500 = Color(0xFF2B3C33);
+  static const Color supplementary400 = Color(0xFF43544A);
+  static const Color supplementary300 = Color(0xFF5C6C61);
+  static const Color supplementary200 = Color(0xFF758479);
+  static const Color supplementary100 = Color(0xFF8E9C91);
+  static const Color supplementary50 = Color(0xFFA7B4A9);
 
-  // Supporting colors
-  static const Color moss = Color(0xFF7C8363);
-  static const Color sage = Color(0xFFB2B8A3);
-  static const Color clay = Color(0xFFA47551);
-  static const Color terracotta = Color(0xFFBF8069);
+  // Accent (Based on #feeacf)
+  static const Color accent900 = Color(0xFF8C5A51);
+  static const Color accent800 = Color(0xFFA26E65);
+  static const Color accent700 = Color(0xFFB7837A);
+  static const Color accent600 = Color(0xFFCD978E);
+  static const Color accent500 = Color(0xFFDCADA3);
+  static const Color accent400 = Color(0xFFE9C1B8);
+  static const Color accent300 = Color(0xFFF1D4CB);
+  static const Color accent200 = Color(0xFFF8E6DF);
+  static const Color accent100 = Color(0xFFFCEFE9);
+  static const Color accent50 = Color(0xFFFEF7F4);
 
-  // Functional colors
-  static const Color background = Color(0xFFF8F5F1);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color error = Color(0xFFAA5042);
-  static const Color success = Color(0xFF7A8B75);
-  static const Color warning = Color(0xFFBF9A5A);
-  static const Color info = Color(0xFF7D8CA3);
+  // Lighter Green
+  static const Color lightGreen900 = Color(0xFF0F3D1A);
+  static const Color lightGreen800 = Color(0xFF175926);
+  static const Color lightGreen700 = Color(0xFF1E7432);
+  static const Color lightGreen600 = Color(0xFF26903F);
+  static const Color lightGreen500 = Color(0xFF2EAB4C);
+  static const Color lightGreen400 = Color(0xFF4FC96C);
+  static const Color lightGreen300 = Color(0xFF73E08B);
+  static const Color lightGreen200 = Color(0xFF9CF5AA);
+  static const Color lightGreen100 = Color(0xFFC4FFCA);
+  static const Color lightGreen50 = Color(0xFFE6FFE9);
 
-  // Text colors
-  static const Color textPrimary = Color(0xFF312A24);
-  static const Color textSecondary = Color(0xFF6E665D);
-  static const Color textTertiary = Color(0xFF9E958C);
-  static const Color textLight = Color(0xFFF5F2EE);
+  // Backgrounds
+  static const Color backgroundLight = Color(0xFFFEF4EE);
+  static const Color backgroundDark = Color(0xFF1A2320);
 
-  static const Color transparent = Colors.transparent;
+  // Neutral
+  static const Color neutral900 = Color(0xFF181818);
+  static const Color neutral500 = Color(0xFF6B6B6B);
+  static const Color neutral100 = Color(0xFFDEDEE0);
+
+  // Foreground
+  static const Color foregroundSoft = Color(0xFF676970);
+  static const Color foregroundDefault = Color(0xFF212224);
+  static const Color foregroundMute = Color(0xFFA8A9AF);
 }

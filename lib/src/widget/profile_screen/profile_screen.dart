@@ -34,19 +34,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.white,
+        surfaceTintColor: AppColors.white,
         centerTitle: false,
         title: Text(
           'Profile',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: AppColors.neutral900,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       body: ListenableBuilder(
         listenable: _profileScreenController,
         builder: (context, child) {
@@ -88,7 +88,7 @@ class _ProfileScreenIdle extends StatelessWidget {
           sliver: SliverToBoxAdapter(
             child: Row(
               children: [
-                Icon(Icons.account_circle, size: 96, color: AppColors.primary),
+                Icon(Icons.account_circle, size: 96, color: AppColors.supplementary600),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -101,7 +101,7 @@ class _ProfileScreenIdle extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: AppColors.neutral900,
                             ),
                           ),
                         ],
@@ -125,9 +125,9 @@ class _ProfileScreenIdle extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.textLight,
-                disabledBackgroundColor: AppColors.greige,
+                backgroundColor: AppColors.supplementary600,
+                foregroundColor: AppColors.neutral900,
+                disabledBackgroundColor: AppColors.supplementary600,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
@@ -152,7 +152,7 @@ class _ProfileScreenLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(color: AppColors.espresso),
+      child: CircularProgressIndicator(color: AppColors.supplementary600),
     );
   }
 }

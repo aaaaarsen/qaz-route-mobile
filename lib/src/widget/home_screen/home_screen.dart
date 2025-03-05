@@ -33,19 +33,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.white,
+        surfaceTintColor: AppColors.white,
         centerTitle: false,
         title: Text(
           'Discover Almaty',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: AppColors.neutral900,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       body: ListenableBuilder(
         listenable: _homeScreenController,
         builder: (context, child) {
@@ -83,13 +83,13 @@ class _HomeScreenIdle extends StatelessWidget {
               onChanged: (text) {
                 homeScreenController.searchRoutes(text);
               },
-              style: TextStyle(color: AppColors.textPrimary),
-              cursorColor: AppColors.primary,
+              style: TextStyle(color: AppColors.neutral900),
+              cursorColor: AppColors.supplementary600,
               decoration: InputDecoration(
                 hintText: 'Search',
-                hintStyle: TextStyle(color: AppColors.textTertiary),
-                prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
-                fillColor: AppColors.ivory,
+                hintStyle: TextStyle(color: AppColors.neutral900),
+                prefixIcon: Icon(Icons.search, color: AppColors.neutral900),
+                fillColor: AppColors.white,
                 filled: true,
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 12,
@@ -97,15 +97,15 @@ class _HomeScreenIdle extends StatelessWidget {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(color: AppColors.greige),
+                  borderSide: BorderSide(color: AppColors.supplementary600),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(color: AppColors.greige),
+                  borderSide: BorderSide(color: AppColors.supplementary600),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+                  borderSide: BorderSide(color: AppColors.supplementary600, width: 1.5),
                 ),
               ),
             ),
@@ -137,7 +137,7 @@ class _HomeScreenLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(color: AppColors.espresso),
+      child: CircularProgressIndicator(color: AppColors.supplementary600),
     );
   }
 }

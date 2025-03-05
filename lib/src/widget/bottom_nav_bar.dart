@@ -19,7 +19,7 @@ class BottomNavBar extends StatelessWidget {
       child: Container(
         height: 76,
         decoration: BoxDecoration(
-          color: AppColors.espresso,
+          color: AppColors.supplementary600,
           borderRadius: BorderRadius.circular(36),
           boxShadow: [
             BoxShadow(
@@ -88,7 +88,7 @@ class BottomNavBarItem extends StatelessWidget {
         decoration:
             isSelected
                 ? BoxDecoration(
-                  color: AppColors.surface.withValues(alpha: 0.2),
+                  color: AppColors.black.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(24),
                 )
                 : null,
@@ -96,11 +96,11 @@ class BottomNavBarItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.surface, size: 28),
+            Icon(icon, color: AppColors.black, size: 28),
             Text(
               label,
               style: TextStyle(
-                color: AppColors.surface,
+                color: AppColors.neutral900,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),

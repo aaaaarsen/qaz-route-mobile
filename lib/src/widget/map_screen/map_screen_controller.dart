@@ -58,7 +58,7 @@ class MapScreenController extends ChangeNotifier {
         Polyline(
           polylineId: PolylineId('polyline-${route.id}'),
           points: route.path,
-          color: AppColors.info,
+          color: AppColors.supplementary600,
           width: 5,
         ),
       );
@@ -99,7 +99,7 @@ class MapScreenController extends ChangeNotifier {
       Polyline(
         polylineId: PolylineId('polyline-${route.id}'),
         points: route.path,
-        color: AppColors.info,
+        color: AppColors.supplementary600,
         width: 5,
       ),
     );

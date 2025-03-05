@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/router/app_router.dart';
-import 'package:qaz_route_mobile/src/widget/bottom_nav_bar.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -34,11 +33,43 @@ class AppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       extendBody: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       animationDuration: Duration.zero,
       routes: const [HomeRoute(), MapRoute(), QrRoute(), ProfileRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavBar(tabsRouter: tabsRouter);
+        return NavigationBar(
+          selectedIndex: tabsRouter.activeIndex,
+          onDestinationSelected: (index) {
+            tabsRouter.setActiveIndex(index);
+          },
+          backgroundColor: AppColors.white,
+          indicatorColor: AppColors.lightGreen400,
+          labelTextStyle: WidgetStateMapper({
+            WidgetState.any: TextStyle(color: AppColors.neutral500),
+          }),
+          destinations: [
+            NavigationDestination(
+              icon: Icon(Icons.home, color: AppColors.neutral500),
+              selectedIcon: Icon(Icons.home, color: AppColors.white),
+              label: 'Home',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.map, color: AppColors.neutral500),
+              selectedIcon: Icon(Icons.map, color: AppColors.white),
+              label: 'Map',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.qr_code, color: AppColors.neutral500),
+              selectedIcon: Icon(Icons.qr_code, color: AppColors.white),
+              label: 'QR',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person, color: AppColors.neutral500),
+              selectedIcon: Icon(Icons.person, color: AppColors.white),
+              label: 'Profile',
+            ),
+          ],
+        );
       },
     );
   }

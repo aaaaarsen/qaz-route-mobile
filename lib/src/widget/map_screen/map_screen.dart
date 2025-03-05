@@ -39,14 +39,14 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.transparent,
+        backgroundColor: AppColors.clear,
         centerTitle: false,
         title: Text(
           'Map',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: AppColors.neutral900,
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
@@ -100,7 +100,7 @@ class MapScreenRoutePreview extends StatelessWidget {
       padding: const EdgeInsets.all(12),
 
       decoration: BoxDecoration(
-        color: AppColors.background,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -131,7 +131,7 @@ class MapScreenRoutePreview extends StatelessWidget {
                 Text(
                   route!.title,
                   style: const TextStyle(
-                    color: AppColors.textPrimary,
+                    color: AppColors.neutral900,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -142,7 +142,7 @@ class MapScreenRoutePreview extends StatelessWidget {
                 Text(
                   route!.location,
                   style: TextStyle(
-                    color: AppColors.textSecondary,
+                    color: AppColors.neutral900,
                     fontSize: 14,
                   ),
                   maxLines: 1,
@@ -158,7 +158,7 @@ class MapScreenRoutePreview extends StatelessWidget {
               const Icon(
                 Icons.access_time,
                 size: 18,
-                color: AppColors.warning,
+                color: AppColors.supplementary600600,
               ),
               const SizedBox(height: 4),
               Text(
@@ -166,7 +166,7 @@ class MapScreenRoutePreview extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: AppColors.warning,
+                  color: AppColors.supplementary600600,
                 ),
               ),
             ],
