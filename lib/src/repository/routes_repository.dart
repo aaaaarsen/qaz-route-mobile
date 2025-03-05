@@ -19,6 +19,13 @@ final class RoutesRepository {
     return _cachedRoutes!;
   }
 
+  Future<RouteModel> getRouteById(String id) async {
+    return _mockRoutes.firstWhere(
+      (route) => route.id == id,
+      orElse: () => _mockRoutes.first,
+    );
+  }
+
   final List<RouteModel> _mockRoutes = [
     const RouteModel(
       id: 'alm-001',

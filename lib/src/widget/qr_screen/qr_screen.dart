@@ -2,6 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
+import 'package:qaz_route_mobile/src/repository/routes_repository.dart';
+import 'package:qaz_route_mobile/src/router/app_router.dart';
+import 'package:qaz_route_mobile/src/widget/qr_screen/qr_screen_controller.dart';
 
 @RoutePage()
 class QrScreen extends StatefulWidget {
@@ -13,27 +16,37 @@ class QrScreen extends StatefulWidget {
 
 class _QrScreenState extends State<QrScreen> {
   late final MobileScannerController _controller;
+  late final QrScreenController _qrScreenController;
 
-  bool isQRDetected = false;
+  bool _isQRDetected = false;
 
   @override
   void initState() {
     super.initState();
     _controller = MobileScannerController();
+    _qrScreenController = QrScreenController(repository: RoutesRepository());
   }
 
   @override
   void dispose() {
+    _qrScreenController.dispose();
     _controller.dispose();
     super.dispose();
   }
 
-  void _onDetect(BarcodeCapture capture) {
+  Future<void> _onDetect(BarcodeCapture capture) async {
     final List<Barcode> barcodes = capture.barcodes;
     if (barcodes.isNotEmpty) {
       final String? scannedData = barcodes.first.rawValue;
-      if (scannedData != null && !isQRDetected) {
-        isQRDetected = true;
+      if (scannedData != null && !_isQRDetected) {
+        _isQRDetected = true;
+        await _qrScreenController.getRouteById(scannedData);
+        final ctx = context;
+        final route = _qrScreenController.scannedRoute;
+        if (ctx.mounted && route != null) {
+          ctx.router.navigate(RouteDetailsRoute(route: route));
+        }
+        Future.delayed(Duration(seconds: 10), () => _isQRDetected = false);
       }
     }
   }
