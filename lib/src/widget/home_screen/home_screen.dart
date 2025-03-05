@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/model/route_model.dart';
 import 'package:qaz_route_mobile/src/repository/routes_repository.dart';
+import 'package:qaz_route_mobile/src/router/app_router.dart';
 import 'package:qaz_route_mobile/src/widget/home_screen/home_screen_controller.dart';
 
 @RoutePage()
@@ -140,7 +141,7 @@ class _HomeScreenLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(color: AppColors.supplementary600),
+      child: CircularProgressIndicator(color: AppColors.lightGreen600),
     );
   }
 }
@@ -175,70 +176,75 @@ class _HomeScreenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.4),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return InkWell(
+      onTap: () {
+        context.router.navigate(RouteDetailsRoute(route: route));
+      },
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: AppColors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.4),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            route.title,
-            maxLines: 1,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text('Distance', style: TextStyle(fontSize: 12)),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${route.distance} km',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              route.title,
+              maxLines: 1,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Distance', style: TextStyle(fontSize: 12)),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${route.distance} km',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text('Location', style: TextStyle(fontSize: 12)),
-                    const SizedBox(height: 2),
-                    Text(
-                      route.location,
-                      maxLines: 2,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(height: 12),
+                      Text('Location', style: TextStyle(fontSize: 12)),
+                      const SizedBox(height: 2),
+                      Text(
+                        route.location,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Image.network(
-                route.imageUrl,
-                width: 128,
-                height: 96,
-                fit: BoxFit.cover,
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 16),
+                Image.network(
+                  route.previewImageUrl,
+                  width: 128,
+                  height: 96,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

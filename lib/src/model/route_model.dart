@@ -3,7 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 final class RouteModel {
   const RouteModel({
     required this.id,
-    required this.imageUrl,
+    required this.previewImageUrl,
+    required this.routeImagesUrls,
     required this.title,
     required this.location,
     required this.path,
@@ -12,7 +13,8 @@ final class RouteModel {
   });
 
   final String id;
-  final String imageUrl;
+  final String previewImageUrl;
+  final List<String> routeImagesUrls;
   final String title;
   final String location;
   final int completionTime;

@@ -59,6 +59,22 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [HomeScreenWrapper]
+class HomeRouteWrapper extends PageRouteInfo<void> {
+  const HomeRouteWrapper({List<PageRouteInfo>? children})
+    : super(HomeRouteWrapper.name, initialChildren: children);
+
+  static const String name = 'HomeRouteWrapper';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return WrappedRoute(child: const HomeScreenWrapper());
+    },
+  );
+}
+
+/// generated route for
 /// [MapScreen]
 class MapRoute extends PageRouteInfo<void> {
   const MapRoute({List<PageRouteInfo>? children})
@@ -104,4 +120,41 @@ class QrRoute extends PageRouteInfo<void> {
       return const QrScreen();
     },
   );
+}
+
+/// generated route for
+/// [RouteDetailsScreen]
+class RouteDetailsRoute extends PageRouteInfo<RouteDetailsRouteArgs> {
+  RouteDetailsRoute({
+    Key? key,
+    required RouteModel route,
+    List<PageRouteInfo>? children,
+  }) : super(
+         RouteDetailsRoute.name,
+         args: RouteDetailsRouteArgs(key: key, route: route),
+         initialChildren: children,
+       );
+
+  static const String name = 'RouteDetailsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<RouteDetailsRouteArgs>();
+      return RouteDetailsScreen(key: args.key, route: args.route);
+    },
+  );
+}
+
+class RouteDetailsRouteArgs {
+  const RouteDetailsRouteArgs({this.key, required this.route});
+
+  final Key? key;
+
+  final RouteModel route;
+
+  @override
+  String toString() {
+    return 'RouteDetailsRouteArgs{key: $key, route: $route}';
+  }
 }

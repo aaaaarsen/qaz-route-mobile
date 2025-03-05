@@ -1,10 +1,42 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 
 @RoutePage()
-class QrScreen extends StatelessWidget {
+class QrScreen extends StatefulWidget {
   const QrScreen({super.key});
+
+  @override
+  State<QrScreen> createState() => _QrScreenState();
+}
+
+class _QrScreenState extends State<QrScreen> {
+  late final MobileScannerController _controller;
+
+  bool isQRDetected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = MobileScannerController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onDetect(BarcodeCapture capture) {
+    final List<Barcode> barcodes = capture.barcodes;
+    if (barcodes.isNotEmpty) {
+      final String? scannedData = barcodes.first.rawValue;
+      if (scannedData != null && !isQRDetected) {
+        isQRDetected = true;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +53,85 @@ class QrScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
+        ),
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: MobileScanner(
+                controller: _controller,
+                onDetect: _onDetect,
+              ),
+            ),
+            Positioned.fill(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: AppColors.white, width: 6),
+                            top: BorderSide(color: AppColors.white, width: 6),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 64),
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            right: BorderSide(color: AppColors.white, width: 6),
+                            top: BorderSide(color: AppColors.white, width: 6),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 64),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: AppColors.white, width: 6),
+                            bottom: BorderSide(
+                              color: AppColors.white,
+                              width: 6,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 64),
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            right: BorderSide(color: AppColors.white, width: 6),
+                            bottom: BorderSide(
+                              color: AppColors.white,
+                              width: 6,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

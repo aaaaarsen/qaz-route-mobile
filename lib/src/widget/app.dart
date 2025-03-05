@@ -21,7 +21,11 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: _router.config());
+    return MaterialApp.router(
+      routerConfig: _router.config(
+        navigatorObservers: () => [AutoRouteObserver()],
+      ),
+    );
   }
 }
 

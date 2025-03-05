@@ -170,7 +170,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         width: 24,
                         height: 24,
                         child: CircularProgressIndicator(
-                          color: AppColors.neutral900,
+                          color: AppColors.lightGreen600,
                           strokeWidth: 2,
                         ),
                       ),
