@@ -68,150 +68,153 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: ListenableBuilder(
-          listenable: _authScreenController,
-          builder: (context, child) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    'QazRoute',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.neutral900,
+      body: Center(
+        child: SingleChildScrollView(
+          child: ListenableBuilder(
+            listenable: _authScreenController,
+            builder: (context, child) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'QazRoute',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.neutral900,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  TextField(
-                    controller: _emailController,
-                    style: const TextStyle(color: AppColors.neutral900),
-                    cursorColor: AppColors.supplementary600,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: _getInputDecoration(
-                      hintText: 'Email',
-                      prefixIcon: Icons.email,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _passwordController,
-                    style: const TextStyle(color: AppColors.neutral900),
-                    cursorColor: AppColors.supplementary600,
-                    obscureText: !_isPasswordVisible,
-                    decoration: _getInputDecoration(
-                      hintText: 'Password',
-                      prefixIcon: Icons.lock,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: AppColors.black,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
+                    const SizedBox(height: 32),
+                    TextField(
+                      controller: _emailController,
+                      style: const TextStyle(color: AppColors.neutral900),
+                      cursorColor: AppColors.supplementary600,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: _getInputDecoration(
+                        hintText: 'Email',
+                        prefixIcon: Icons.email,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  if (_authScreenController.errorMessage.isNotEmpty) ...[
-                    Text(
-                      _authScreenController.errorMessage,
-                      style: TextStyle(color: AppColors.supplementary600900),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _passwordController,
+                      style: const TextStyle(color: AppColors.neutral900),
+                      cursorColor: AppColors.supplementary600,
+                      obscureText: !_isPasswordVisible,
+                      decoration: _getInputDecoration(
+                        hintText: 'Password',
+                        prefixIcon: Icons.lock,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppColors.black,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 24),
-                  ],
-                  ElevatedButton(
-                    onPressed: () async {
-                      switch (_authScreenController.state) {
-                        case AuthScreenState.loading:
-                          return;
-                        case AuthScreenState.idle || AuthScreenState.error:
-                          final isSuccess = await () async {
-                            if (_isSignIn) {
-                              return await _authScreenController.signIn(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              );
-                            } else {
-                              return await _authScreenController.signUp(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              );
-                            }
-                          }();
-
-                          if (isSuccess && context.mounted) {
-                            context.router.replace(AppRoute());
-                          }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.lightGreen600,
-                      foregroundColor: AppColors.neutral900,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: switch (_authScreenController.state) {
-                      AuthScreenState.loading => const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          color: AppColors.white,
-                          strokeWidth: 2,
-                        ),
-                      ),
-                      AuthScreenState.idle || AuthScreenState.error => Text(
-                        _isSignIn ? 'Sign In' : 'Sign Up',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    if (_authScreenController.errorMessage.isNotEmpty) ...[
                       Text(
-                        _isSignIn
-                            ? 'Don\'t have an account? '
-                            : 'Already have an account?',
-                        style: TextStyle(color: AppColors.neutral900),
+                        _authScreenController.errorMessage,
+                        style: TextStyle(color: AppColors.supplementary600900),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() => _isSignIn = !_isSignIn);
-                        },
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.neutral900,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                        ),
-                        child: Text(
-                          _isSignIn ? 'Sign Up' : 'Sign In',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      const SizedBox(height: 24),
                     ],
-                  ),
-                ],
-              ),
-            );
-          },
+                    ElevatedButton(
+                      onPressed: () async {
+                        switch (_authScreenController.state) {
+                          case AuthScreenState.loading:
+                            return;
+                          case AuthScreenState.idle || AuthScreenState.error:
+                            final isSuccess = await () async {
+                              if (_isSignIn) {
+                                return await _authScreenController.signIn(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                              } else {
+                                return await _authScreenController.signUp(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                              }
+                            }();
+
+                            if (isSuccess && context.mounted) {
+                              context.router.replace(AppRoute());
+                            }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.lightGreen600,
+                        foregroundColor: AppColors.neutral900,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: switch (_authScreenController.state) {
+                        AuthScreenState.loading => const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            color: AppColors.white,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                        AuthScreenState.idle || AuthScreenState.error => Text(
+                          _isSignIn ? 'Sign In' : 'Sign Up',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _isSignIn
+                              ? 'Don\'t have an account? '
+                              : 'Already have an account?',
+                          style: TextStyle(color: AppColors.neutral900),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() => _isSignIn = !_isSignIn);
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.neutral900,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                          ),
+                          child: Text(
+                            _isSignIn ? 'Sign Up' : 'Sign In',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
