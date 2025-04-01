@@ -1,4 +1,4 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final class RouteModel {
   const RouteModel({
@@ -7,7 +7,7 @@ final class RouteModel {
     required this.routeImagesUrls,
     required this.title,
     required this.location,
-    required this.path,
+    // required this.path,
     required this.completionTime,
     required this.distance,
   });
@@ -19,7 +19,7 @@ final class RouteModel {
   final String location;
   final int completionTime;
   final int distance;
-  final List<LatLng> path;
+  // final List<LatLng> path;
 
   String formattedCompletionTime() {
     if (completionTime < 60) {
