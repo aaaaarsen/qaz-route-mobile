@@ -197,10 +197,16 @@ class _HomeScreenItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              route.title,
-              maxLines: 1,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Icon(Icons.hiking, size: 24),
+                const SizedBox(width: 8),
+                Text(
+                  route.title,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Row(

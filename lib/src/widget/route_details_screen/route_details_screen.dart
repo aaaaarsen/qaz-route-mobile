@@ -60,6 +60,20 @@ class RouteDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
+                Row(
+                  children: [
+                    Icon(Icons.hiking, size: 24),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Hiking',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(child: SizedBox.shrink()),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -75,7 +89,7 @@ class RouteDetailsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(width: 96),
+                const SizedBox(width: 32),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,6 +105,7 @@ class RouteDetailsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(width: 16),
               ],
             ),
           ],
