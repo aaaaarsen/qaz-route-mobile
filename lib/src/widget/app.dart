@@ -39,7 +39,7 @@ class AppScreen extends StatelessWidget {
       extendBody: true,
       backgroundColor: AppColors.white,
       animationDuration: Duration.zero,
-      routes: const [HomeRoute(), /*MapRoute(),*/ QrRoute(), ProfileRoute()],
+      routes: const [HomeRoute(), MapRoute(), QrRoute(), ProfileRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return NavigationBar(
           selectedIndex: tabsRouter.activeIndex,
@@ -58,11 +58,11 @@ class AppScreen extends StatelessWidget {
               selectedIcon: Icon(Icons.home, color: AppColors.white),
               label: 'Home',
             ),
-            // NavigationDestination(
-            //   icon: Icon(Icons.map, color: AppColors.neutral500),
-            //   selectedIcon: Icon(Icons.map, color: AppColors.white),
-            //   label: 'Map',
-            // ),
+            NavigationDestination(
+              icon: Icon(Icons.map, color: AppColors.neutral500),
+              selectedIcon: Icon(Icons.map, color: AppColors.white),
+              label: 'Map',
+            ),
             NavigationDestination(
               icon: Icon(Icons.qr_code, color: AppColors.neutral500),
               selectedIcon: Icon(Icons.qr_code, color: AppColors.white),
