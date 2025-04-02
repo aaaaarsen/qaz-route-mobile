@@ -10,6 +10,7 @@ final class RouteModel {
     required this.path,
     required this.completionTime,
     required this.distance,
+    required this.description,
   });
 
   final String id;
@@ -20,6 +21,7 @@ final class RouteModel {
   final int completionTime;
   final int distance;
   final List<LatLng> path;
+  final String description;
 
   String formattedCompletionTime() {
     if (completionTime < 60) {
@@ -46,6 +48,7 @@ final class RouteModel {
           return LatLng(double.parse(coords[0]), double.parse(coords[1]));
         }),
       ),
+      description: map['description'],
     );
   }
 }

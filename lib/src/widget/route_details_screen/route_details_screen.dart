@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/model/route_model.dart';
+import 'package:qaz_route_mobile/src/router/app_router.dart';
 
 @RoutePage()
 class RouteDetailsScreen extends StatelessWidget {
@@ -30,8 +31,13 @@ class RouteDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          16,
+          16,
+          16,
+          16 + MediaQuery.paddingOf(context).bottom,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -107,6 +113,37 @@ class RouteDetailsScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
               ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'DESCRIPTION',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              route.description,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                context.router.navigate(MapRoute());
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.maxFinite, 48),
+                backgroundColor: AppColors.lightGreen600,
+                foregroundColor: AppColors.white,
+                disabledBackgroundColor: AppColors.supplementary600,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 8,
+              ),
+              child: Text(
+                'Open Map',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
