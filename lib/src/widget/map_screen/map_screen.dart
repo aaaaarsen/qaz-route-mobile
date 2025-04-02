@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:qaz_route_mobile/src/core/app_colors.dart';
 import 'package:qaz_route_mobile/src/model/route_model.dart';
+import 'package:qaz_route_mobile/src/repository/routes_repository.dart';
 import 'package:qaz_route_mobile/src/router/app_router.dart';
+import 'package:qaz_route_mobile/src/widget/map_screen/map_screen_controller.dart';
 
 @RoutePage()
 class MapScreen extends StatefulWidget {
@@ -15,35 +19,79 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  MapboxMap? _mapboxMap;
+  final Completer<MapboxMap> _mapboxMapCompleter = Completer<MapboxMap>();
 
-  void addMarkerWithNetworkImage() async {
+  late final MapScreenController _mapScreenController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapScreenController = MapScreenController(repository: RoutesRepository());
+    _mapScreenController.loadRoutes().whenComplete(() {
+      _zoomToAlmaty();
+      _loadMarkers();
+    });
+  }
+
+  Future<void> _zoomToAlmaty() async {
+    final mapboxMap = await _mapboxMapCompleter.future;
+
+    mapboxMap.flyTo(_kAlmaty, MapAnimationOptions(duration: 3000));
+  }
+
+  Future<void> _loadMarkers() async {
+    final mapboxMap = await _mapboxMapCompleter.future;
+
     final pointAnnotationManager =
-        await _mapboxMap?.annotations.createPointAnnotationManager();
+        await mapboxMap.annotations.createPointAnnotationManager();
 
     final ByteData bytes = await rootBundle.load('assets/pin.png');
-    final Uint8List list = bytes.buffer.asUint8List();
-    final PointAnnotationOptions annotationOptions = PointAnnotationOptions(
-      geometry: Point(coordinates: Position(-122.4194, 37.7749)),
-      image: list,
-    );
+    final Uint8List markerBytes = bytes.buffer.asUint8List();
 
-    await pointAnnotationManager?.create(annotationOptions);
+    for (var route in _mapScreenController.routes) {
+      final PointAnnotationOptions annotationOptions = PointAnnotationOptions(
+        geometry: route.path.first,
+        image: markerBytes,
+        iconSize: 1.2,
+      );
+
+      await pointAnnotationManager.create(annotationOptions);
+    }
+
+    pointAnnotationManager.addOnPointAnnotationClickListener(
+      MarkerClickListener(
+        onClick: (annotation) {
+          final clickedRoute = _mapScreenController.routes.firstWhere((route) {
+            final lat = route.path.first.coordinates.lat;
+            final lng = route.path.first.coordinates.lng;
+            final isSameLat = lat == annotation.geometry.coordinates.lat;
+            final isSameLng = lng == annotation.geometry.coordinates.lng;
+            return isSameLat && isSameLng;
+          });
+          _mapScreenController.selectRoute(clickedRoute);
+        },
+      ),
+    );
   }
 
   Future<void> _zoomIn() async {
-    final currentCameraState = await _mapboxMap?.getCameraState();
-    if (currentCameraState == null) return;
+    final mapboxMap = await _mapboxMapCompleter.future;
+    final currentCameraState = await mapboxMap.getCameraState();
     final currentZoom = currentCameraState.zoom;
-    await _mapboxMap?.setCamera(CameraOptions(zoom: currentZoom + 1));
+    await mapboxMap.setCamera(CameraOptions(zoom: currentZoom + 1));
   }
 
   Future<void> _zoomOut() async {
-    final currentCameraState = await _mapboxMap?.getCameraState();
-    if (currentCameraState == null) return;
+    final mapboxMap = await _mapboxMapCompleter.future;
+    final currentCameraState = await mapboxMap.getCameraState();
     final currentZoom = currentCameraState.zoom;
-    await _mapboxMap?.setCamera(CameraOptions(zoom: currentZoom - 1));
+    await mapboxMap.setCamera(CameraOptions(zoom: currentZoom - 1));
   }
+
+  static final CameraOptions _kAlmaty = CameraOptions(
+    center: Point(coordinates: Position(76.91868747847725, 43.23011246725963)),
+    zoom: 8,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +115,22 @@ class _MapScreenState extends State<MapScreen> {
           Positioned.fill(
             child: MapWidget(
               onMapCreated: (MapboxMap mapboxMap) {
-                _mapboxMap = mapboxMap;
+                _mapboxMapCompleter.complete(mapboxMap);
               },
             ),
           ),
           Positioned(
-            top: MediaQuery.paddingOf(context).top,
+            top: 0,
             left: 0,
             right: 0,
-            child: MapScreenRoutePreview(route: null),
+            child: ListenableBuilder(
+              listenable: _mapScreenController,
+              builder: (context, child) {
+                return MapScreenRoutePreview(
+                  route: _mapScreenController.selectedRoute,
+                );
+              },
+            ),
           ),
           Positioned(
             bottom: MediaQuery.paddingOf(context).bottom + 56,
@@ -103,95 +158,16 @@ class _MapScreenState extends State<MapScreen> {
   }
 }
 
-// import 'dart:async';
-//
-// import 'package:auto_route/auto_route.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:qaz_route_mobile/src/core/app_colors.dart';
-// import 'package:qaz_route_mobile/src/model/route_model.dart';
-// import 'package:qaz_route_mobile/src/repository/routes_repository.dart';
-// import 'package:qaz_route_mobile/src/router/app_router.dart';
-// import 'package:qaz_route_mobile/src/widget/map_screen/map_screen_controller.dart';
-//
-// @RoutePage()
-// class MapScreen extends StatefulWidget {
-//   const MapScreen({super.key});
-//
-//   @override
-//   State<MapScreen> createState() => _MapScreenState();
-// }
-//
-// class _MapScreenState extends State<MapScreen> {
-//   final Completer<GoogleMapController> _controller =
-//       Completer<GoogleMapController>();
-//   late final MapScreenController _mapScreenController;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _mapScreenController = MapScreenController(repository: RoutesRepository());
-//     _mapScreenController.loadRoutes().whenComplete(() {
-//       _mapScreenController.loadMarkers();
-//     });
-//   }
-//
-//   static const CameraPosition _kAlmaty = CameraPosition(
-//     target: LatLng(43.23011246725963, 76.91868747847725),
-//     zoom: 14,
-//   );
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppColors.white,
-//       appBar: AppBar(
-//         backgroundColor: AppColors.lightGreen600,
-//         surfaceTintColor: AppColors.lightGreen600,
-//         centerTitle: false,
-//         title: Text(
-//           'Map',
-//           style: TextStyle(
-//             color: AppColors.white,
-//             fontWeight: FontWeight.bold,
-//             fontSize: 28,
-//           ),
-//         ),
-//       ),
-//       body: SafeArea(
-//         child: ListenableBuilder(
-//           listenable: _mapScreenController,
-//           builder: (context, child) {
-//             return Stack(
-//               children: [
-//                 Positioned.fill(
-//                   child: GoogleMap(
-//                     mapType: MapType.satellite,
-//                     initialCameraPosition: _kAlmaty,
-//                     polylines: _mapScreenController.polylines,
-//                     markers: _mapScreenController.markers,
-//                     onMapCreated: (GoogleMapController controller) {
-//                       _controller.complete(controller);
-//                     },
-//                   ),
-//                 ),
-//                 Positioned(
-//                   top: MediaQuery.paddingOf(context).top,
-//                   left: 0,
-//                   right: 0,
-//                   child: MapScreenRoutePreview(
-//                     route: _mapScreenController.selectedRoute,
-//                   ),
-//                 ),
-//               ],
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
+class MarkerClickListener extends OnPointAnnotationClickListener {
+  final Function(PointAnnotation) onClick;
+
+  MarkerClickListener({required this.onClick});
+
+  @override
+  void onPointAnnotationClick(PointAnnotation annotation) {
+    onClick(annotation);
+  }
+}
 
 class MapScreenRoutePreview extends StatelessWidget {
   const MapScreenRoutePreview({super.key, required this.route});

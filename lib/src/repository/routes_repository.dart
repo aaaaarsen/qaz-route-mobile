@@ -1,4 +1,5 @@
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:qaz_route_mobile/src/model/route_model.dart';
 
 final class RoutesRepository {
@@ -27,7 +28,7 @@ final class RoutesRepository {
   }
 
   final List<RouteModel> _mockRoutes = [
-    const RouteModel(
+    RouteModel(
       id: 'alm-001',
       previewImageUrl:
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgoMVm24NES2h7i1aOl6yXVySL6sKo9GdI4g&s',
@@ -38,9 +39,11 @@ final class RoutesRepository {
       location: 'Medeu District, Almaty',
       completionTime: 60,
       distance: 13,
-      // path: [LatLng(43.15884627342595, 77.05913234842349)],
+      path: [
+        Point(coordinates: Position(77.05913234842349, 43.15884627342595)),
+      ],
     ),
-    const RouteModel(
+    RouteModel(
       id: 'alm-002',
       previewImageUrl:
           'https://tvnews.by/uploads/posts/2019-06/1559382378_f3ad69924fb1b88888862bc9a8c2527d.jpg',
@@ -51,9 +54,11 @@ final class RoutesRepository {
       location: 'Bostandyk District, Almaty',
       completionTime: 60,
       distance: 6,
-      // path: [LatLng(43.23406617972999, 76.97615621895827)],
+      path: [
+        Point(coordinates: Position(76.97615621895827, 43.23406617972999)),
+      ],
     ),
-    const RouteModel(
+    RouteModel(
       id: 'alm-003',
       previewImageUrl:
           'https://welcome.kz/ru/assets/images/products/0_gallery/locations/almaty/gorky-park.jpeg',
@@ -64,9 +69,11 @@ final class RoutesRepository {
       location: 'Almaly District, Almaty',
       completionTime: 60,
       distance: 4,
-      // path: [LatLng(43.261278636979554, 76.96530355585362)],
+      path: [
+        Point(coordinates: Position(76.96530355585362, 43.261278636979554)),
+      ],
     ),
-    const RouteModel(
+    RouteModel(
       id: 'alm-004',
       previewImageUrl:
           'https://grandevoyage.kz/wp-content/uploads/2020/12/840-600whatsapp-image-2019-08-21-at-15.17.40-1.jpeg',
@@ -79,6 +86,9 @@ final class RoutesRepository {
       completionTime: 60,
       distance: 27,
       location: 'Ile-Alatau National Park, Almaty',
+      path: [
+        Point(coordinates: Position(76.91371, 43.11364)),
+      ],
       // path: [
       //   LatLng(43.11364, 76.91371),
       //   LatLng(43.11334, 76.91404),
