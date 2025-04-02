@@ -33,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
 
   static const CameraPosition _kAlmaty = CameraPosition(
     target: LatLng(43.23011246725963, 76.91868747847725),
-    zoom: 14,
+    zoom: 10,
   );
 
   @override

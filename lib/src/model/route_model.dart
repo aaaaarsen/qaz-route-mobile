@@ -30,4 +30,22 @@ final class RouteModel {
       return mins > 0 ? '$hours h $mins min' : '$hours h';
     }
   }
+
+  factory RouteModel.fromMap(Map<String, dynamic> map) {
+    return RouteModel(
+      id: map['id'].toString(),
+      previewImageUrl: map['preview_image_url'],
+      routeImagesUrls: List<String>.from(map['route_images_urls']),
+      title: map['title'],
+      location: map['location'],
+      completionTime: map['completion_time'],
+      distance: map['distance'],
+      path: List<LatLng>.from(
+        (map['path'] as List).map((latLng) {
+          final coords = latLng.split(',');
+          return LatLng(double.parse(coords[0]), double.parse(coords[1]));
+        }),
+      ),
+    );
+  }
 }
