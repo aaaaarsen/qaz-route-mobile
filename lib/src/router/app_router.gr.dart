@@ -91,6 +91,22 @@ class MapRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [PremiumScreen]
+class PremiumRoute extends PageRouteInfo<void> {
+  const PremiumRoute({List<PageRouteInfo>? children})
+    : super(PremiumRoute.name, initialChildren: children);
+
+  static const String name = 'PremiumRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PremiumScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})
@@ -102,6 +118,22 @@ class ProfileRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const ProfileScreen();
+    },
+  );
+}
+
+/// generated route for
+/// [ProfileScreenWrapper]
+class ProfileRouteWrapper extends PageRouteInfo<void> {
+  const ProfileRouteWrapper({List<PageRouteInfo>? children})
+    : super(ProfileRouteWrapper.name, initialChildren: children);
+
+  static const String name = 'ProfileRouteWrapper';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return WrappedRoute(child: const ProfileScreenWrapper());
     },
   );
 }

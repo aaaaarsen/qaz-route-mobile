@@ -86,6 +86,7 @@ class _ProfileScreenIdle extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -115,6 +116,65 @@ class _ProfileScreenIdle extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 32),
+          Text(
+            'SETTINGS',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          const Divider(height: 0, thickness: 1),
+          TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              minimumSize: Size(double.maxFinite, 48),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Personal information',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.black,
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.black),
+              ],
+            ),
+          ),
+          const Divider(height: 0, thickness: 1),
+          TextButton(
+            onPressed: () {
+              context.router.navigate(PremiumRoute());
+            },
+            style: TextButton.styleFrom(
+              minimumSize: Size(double.maxFinite, 48),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  'Subscription',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.black,
+                  ),
+                ),
+                Expanded(child: SizedBox()),
+                Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.black),
+              ],
+            ),
+          ),
+          const Divider(height: 0, thickness: 1),
           Expanded(child: SizedBox()),
           ElevatedButton(
             onPressed: () async {
