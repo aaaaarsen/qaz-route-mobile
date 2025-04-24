@@ -125,18 +125,41 @@ class RouteDetailsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
             const SizedBox(height: 32),
+
+            ElevatedButton(
+              onPressed: () {
+                context.router.navigate(PremiumRoute());
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.maxFinite, 48),
+                backgroundColor: AppColors.lightGreen600,
+                foregroundColor: AppColors.white,
+                disabledBackgroundColor: AppColors.lightGreen600,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                elevation: 8,
+              ),
+              child: Text(
+                'Start Route',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 context.router.navigate(MapRoute());
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.maxFinite, 48),
-                backgroundColor: AppColors.lightGreen600,
-                foregroundColor: AppColors.white,
-                disabledBackgroundColor: AppColors.supplementary600,
+                backgroundColor: AppColors.white,
+                foregroundColor: AppColors.lightGreen600,
+                disabledBackgroundColor: AppColors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(color: AppColors.lightGreen600, width: 3)
                 ),
                 elevation: 8,
               ),
